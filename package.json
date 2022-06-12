@@ -1,0 +1,36 @@
+{
+  "name": "ToDoList",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/api.js",
+  "scripts": {
+    "lint": "eslint . --ext .js",
+    "lintfix": "eslint . --ext .js --fix",
+    "local": "dotenv node src/api.js",
+    "test": "nyc --reporter=html mocha -t 10000 --exit",
+    "start": "node src/api.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "camelcase": "^6.2.0",
+    "common-api": "git+https://github.com/grupo-a/common-nodejs-tools.git",
+    "crypto-js": "^4.1.1",
+    "i18n": "^0.13.2",
+    "jsonwebtoken": "^8.5.1",
+    "lodash.snakecase": "^4.1.1",
+    "md5": "^2.3.0",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "chai": "4.2.0",
+    "chai-http": "^4.3.0",
+    "dotenv": "^8.2.0",
+    "eslint": "^6.6.0",
+    "faker": "^4.1.0",
+    "mocha": "^6.2.0",
+    "mocha-junit-reporter": "^1.23.1",
+    "nodemon": "^2.0.3",
+    "nyc": "^14.1.1"
+  }
+}
