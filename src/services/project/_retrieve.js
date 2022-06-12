@@ -13,7 +13,7 @@ const { logger, error } = require('common-api');
 //
 // exports
 const getAllByUser = async (data) => {
-   
+
   try {
     return await db.retrieve.getAllByUser(data);
 
@@ -24,7 +24,7 @@ const getAllByUser = async (data) => {
 };
 
 const getById = async (data) => {
-   
+
   try {
     return await db.retrieve.getById(data);
 

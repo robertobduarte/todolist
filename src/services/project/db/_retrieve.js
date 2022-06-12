@@ -20,13 +20,14 @@ const getAllByUser = async (user) => {
 };
 
 const getById = async (data) => {
+
   const query = `
   SELECT
     id, name, created_at
   FROM
     td_project
   WHERE
-    id = ? 
+    id = ?
     AND user = ?
   `;
   const values = [data.id, data.user];

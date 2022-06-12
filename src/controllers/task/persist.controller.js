@@ -75,9 +75,16 @@ const edit = async (req, res) => {
   }
 
   const taskVerify = await serviceTask.retrieveTask.getById({'id': id, 'user': user});
+
   if (taskVerify.finished_at) {
     throw new error.HttpError(i18n.__('ToDoList-401_unauthorized-update-task'), 401, 'ToDoList-401_unauthorized-update-task');
   }
+
+  const project = await serviceProject.retrieveProject.getById({ 'id': taskVerify.project, 'user': user});
+  if (!project) {
+    throw new error.HttpError('ToDoList-401_unauthorized', 401, 'ToDoList-401_unauthorized');
+  }
+
   dataTask.id = taskVerify.id;
 
   try {
@@ -86,8 +93,8 @@ const edit = async (req, res) => {
     if (!taskUpdated) {
       throw new error.HttpError(i18n.__('ToDoList-401_error_update-project'), 401, 'ToDoList-401_error_update-project');
     }
-    return response.success(res, dataTask);    
-    
+    return response.success(res, dataTask);
+
   } catch (err) {
     if (err.name === 'HttpError') {
       throw err;
