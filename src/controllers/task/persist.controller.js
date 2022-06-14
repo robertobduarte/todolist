@@ -31,11 +31,10 @@ const _validateEditBody = (body) =>{
     'id'         : '/EditProject',
     'type'       : 'object',
     'properties' : {
-      'name'        : {'type': 'string'},      
+      'name'        : {'type': 'string'},
       'description' : {'type': 'string'},
       'finished_at' : {'type': 'string'}
-    },
-    'required': ['name']
+    }
   };
   return validator.validate(editSchema, body);
 };
@@ -49,7 +48,7 @@ const create = async (req, res) => {
 
   const project = await serviceProject.retrieveProject.getById({ 'id': task.project, 'user': user});
   if (!project) {
-    throw new error.HttpError(i18n.__('ToDoList-401_unauthorized-create-tasks-in-the-project'), 401, 'ToDoList-401_unauthorized-create-tasks-in-the-project');
+    throw new error.HttpError(i18n.__('ToDoList-401_unauthorized'), 401, 'ToDoList-401_unauthorized');
   }
 
   try {
@@ -61,7 +60,7 @@ const create = async (req, res) => {
     if (err.name === 'HttpError') {
       throw err;
     }
-    throw new error.HttpError(i18n.__('Error creating task'), 400, 'ToDoList-400_error-creating-task');
+    throw new error.HttpError(i18n.__('ToDoList-400_error-creating-task'), 400, 'ToDoList-400_error-creating-task');
   }
 };
 
@@ -77,12 +76,12 @@ const edit = async (req, res) => {
   const taskVerify = await serviceTask.retrieveTask.getById({'id': id, 'user': user});
 
   if (taskVerify.finished_at) {
-    throw new error.HttpError(i18n.__('ToDoList-401_unauthorized-update-task'), 401, 'ToDoList-401_unauthorized-update-task');
+    throw new error.HttpError(i18n.__('ToDoList-401_unauthorized'), 401, 'ToDoList-401_unauthorized');
   }
 
   const project = await serviceProject.retrieveProject.getById({ 'id': taskVerify.project, 'user': user});
   if (!project) {
-    throw new error.HttpError('ToDoList-401_unauthorized', 401, 'ToDoList-401_unauthorized');
+    throw new error.HttpError(i18n.__('ToDoList-401_unauthorized'), 401, 'ToDoList-401_unauthorized');
   }
 
   dataTask.id = taskVerify.id;
@@ -99,7 +98,7 @@ const edit = async (req, res) => {
     if (err.name === 'HttpError') {
       throw err;
     }
-    throw new error.HttpError('Error registering project', 400, 'ToDoList-400_error-register-project');
+    throw new error.HttpError(i18n.__('ToDoList-400_error-update-task'), 400, 'ToDoList-400_error-update-task');
   }
 };
 
@@ -109,7 +108,12 @@ const remove = async (req, res) => {
 
   const task = await serviceTask.retrieveTask.getById({'id': id, 'user': user});
   if (task.finished_at) {
-    throw new error.HttpError(i18n.__('ToDoList-401_unauthorized-update-task'), 401, 'ToDoList-401_unauthorized-update-task');
+    throw new error.HttpError(i18n.__('ToDoList-401_unauthorized'), 401, 'ToDoList-401_unauthorized');
+  }
+
+  const project = await serviceProject.retrieveProject.getById({ 'id': task.project, 'user': user});
+  if (!project) {
+    throw new error.HttpError(i18n.__('ToDoList-401_unauthorized'), 401, 'ToDoList-401_unauthorized');
   }
 
   await serviceTask.removeTask.remove(task.id);
